@@ -47,7 +47,7 @@
   }
 
   var stored = null;
-  try { stored = localStorage.getItem(THEME_KEY); } catch (e) { /* private mode */ }
+  try { stored = localStorage.getItem(THEME_KEY); } catch { /* private mode */ }
   // Honour an explicit choice; otherwise follow the system, defaulting to
   // light because dark-by-default reads as less trustworthy for B2B.
   applyTheme(
@@ -60,7 +60,7 @@
     themeToggle.addEventListener("click", function () {
       var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
       applyTheme(next);
-      try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* ignore */ }
+      try { localStorage.setItem(THEME_KEY, next); } catch { /* ignore */ }
     });
   }
 

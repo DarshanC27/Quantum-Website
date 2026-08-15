@@ -6,7 +6,7 @@
 <title>Quantum Ready — Post-quantum readiness for UK organisations</title>
 <meta name="description" content="Adversaries are recording encrypted traffic today to decrypt it once quantum computers arrive. Quantum Ready scans your public estate, shows exactly what is exposed, and gives you a costed migration plan against the NCSC 2035 deadline.">
 <meta name="theme-color" content="#2563eb">
-<link rel="canonical" href="https://darshanc27.github.io/Quantum.Ready/">
+<link rel="canonical" href="https://darshanc27.github.io/Quantum-Website/">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Quantum Ready — Post-quantum readiness for UK organisations">
@@ -947,6 +947,7 @@ footer {
       <a href="#scan">What we scan</a>
       <a href="#services">Services</a>
       <a href="#team">Team</a>
+      <a href="immersive.html">Immersive</a>
       <a href="#contact">Contact</a>
     </div>
 
@@ -1766,7 +1767,7 @@ footer {
   }
 
   var stored = null;
-  try { stored = localStorage.getItem(THEME_KEY); } catch (e) { /* private mode */ }
+  try { stored = localStorage.getItem(THEME_KEY); } catch { /* private mode */ }
   // Honour an explicit choice; otherwise follow the system, defaulting to
   // light because dark-by-default reads as less trustworthy for B2B.
   applyTheme(
@@ -1779,7 +1780,7 @@ footer {
     themeToggle.addEventListener("click", function () {
       var next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
       applyTheme(next);
-      try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* ignore */ }
+      try { localStorage.setItem(THEME_KEY, next); } catch { /* ignore */ }
     });
   }
 

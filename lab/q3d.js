@@ -156,7 +156,7 @@
     var ctx = this.ctx, s = this.shape, i;
     ctx.clearRect(0, 0, this.w, this.h);
 
-    var flat = new Array(s.points.length);
+    var flat = Array.from({ length: s.points.length });
     for (i = 0; i < s.points.length; i++) flat[i] = this._project(s.points[i]);
 
     ctx.lineWidth = this.lineWidth;

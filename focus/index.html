@@ -172,6 +172,15 @@ h1{font-size:clamp(2rem,5vw,3.4rem);font-weight:800;line-height:1;letter-spacing
 .guide-card p,.guide-card li{font-size:.9rem;color:var(--dim);margin-bottom:.5rem}
 .guide-card ol{padding-left:1.2rem;margin:.8rem 0}
 .guide-card .tip{font-size:.78rem;color:var(--faint);margin-top:1rem;padding-top:1rem;border-top:1px solid var(--line)}
+.guide-card .warn-box{background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.35);
+  border-radius:12px;padding:.9rem;margin:.8rem 0;font-size:.84rem;color:var(--dim)}
+.guide-card .step-check{display:flex;gap:.7rem;align-items:flex-start;margin:.65rem 0;
+  padding:.65rem .75rem;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.02)}
+.guide-card .step-check input{margin-top:.25rem;accent-color:var(--good)}
+.guide-card .step-check label{font-size:.86rem;color:var(--dim);cursor:pointer}
+.guide-card .step-check.done{border-color:rgba(74,222,128,.35);background:rgba(74,222,128,.06)}
+.guide-card .step-check.done label{color:var(--ink)}
+.guide-actions{display:grid;gap:.55rem;margin-top:1rem}
 
 footer{text-align:center;padding:2rem 1rem;color:var(--faint);font-size:.78rem;border-top:1px solid var(--line)}
 footer a{color:var(--cyan)}
@@ -290,9 +299,12 @@ html.shield-active .chip{color:var(--good)}
             <span id="shield-status">Shield down</span>
           </div>
           <p style="font-size:.82rem;color:var(--faint);margin-top:.6rem">
-            Activates wake lock, fullscreen guidance, and visual deflection of notification orbs.
-            On iOS, pair with Focus mode for system-level silence.
+            The sanctuary shield keeps your screen awake and deflects distractions visually.
+            To block notifications from <strong>all other apps</strong>, you must set up iOS Focus once (see below).
           </p>
+          <button class="btn btn-main" id="btn-block-setup" type="button" style="width:100%;margin-top:.9rem">
+            Block all app notifications (iOS setup)
+          </button>
         </div>
 
         <div class="panel">
@@ -313,16 +325,60 @@ html.shield-active .chip{color:var(--good)}
 
 <div id="ios-guide" role="dialog" aria-labelledby="ios-guide-title" aria-modal="true">
   <div class="guide-card">
-    <h3 id="ios-guide-title">Enable iOS Focus mode</h3>
-    <p>For true notification blocking on iPhone/iPad, enable a Focus mode alongside the sanctuary shield:</p>
+    <h3 id="ios-guide-title">Block notifications from all apps</h3>
+    <div class="warn-box">
+      <strong>Important:</strong> No website can silence other apps on iPhone — only iOS Focus can do that.
+      Follow this one-time setup (about 2 minutes), then notifications from every app will be blocked while you study.
+    </div>
+
+    <p><strong>Part 1 — Create a Study Focus that blocks everything</strong></p>
+    <div class="step-check" data-step="1">
+      <input type="checkbox" id="step-1" aria-label="Step 1 done">
+      <label for="step-1">Open <strong>Settings → Focus → +</strong> (top right) → <strong>Custom</strong> → name it <strong>Study</strong></label>
+    </div>
+    <div class="step-check" data-step="2">
+      <input type="checkbox" id="step-2" aria-label="Step 2 done">
+      <label for="step-2">Tap <strong>Apps → Allow Notifications From</strong> → leave the list <strong>empty</strong> (do not add any apps). This blocks every app.</label>
+    </div>
+    <div class="step-check" data-step="3">
+      <input type="checkbox" id="step-3" aria-label="Step 3 done">
+      <label for="step-3">Tap <strong>People → Allow Notifications From</strong> → leave empty, or add only emergency contacts.</label>
+    </div>
+    <div class="step-check" data-step="4">
+      <input type="checkbox" id="step-4" aria-label="Step 4 done">
+      <label for="step-4">Tap <strong>Options</strong> → turn off <strong>Time Sensitive Notifications</strong> if you want zero interruptions.</label>
+    </div>
+    <div class="step-check" data-step="5">
+      <input type="checkbox" id="step-5" aria-label="Step 5 done">
+      <label for="step-5">Tap <strong>Done</strong>. Your Study focus now blocks all app notifications.</label>
+    </div>
+
+    <p style="margin-top:1rem"><strong>Part 2 — Turn it on when you study</strong></p>
+    <div class="step-check" data-step="6">
+      <input type="checkbox" id="step-6" aria-label="Step 6 done">
+      <label for="step-6">Swipe down <strong>Control Centre</strong> → tap <strong>Focus</strong> → select <strong>Study</strong>.</label>
+    </div>
+    <div class="step-check" data-step="7">
+      <input type="checkbox" id="step-7" aria-label="Step 7 done">
+      <label for="step-7">Return here and tap <strong>Begin session</strong>. Keep Focus Sanctuary open in Safari or from your home screen icon.</label>
+    </div>
+
+    <p style="margin-top:1rem"><strong>Part 3 — Auto-enable when you open this app (optional)</strong></p>
     <ol>
-      <li>Open <strong>Settings → Focus</strong></li>
-      <li>Choose <strong>Do Not Disturb</strong> or create a <strong>Study</strong> focus</li>
-      <li>Allow only essential apps and contacts</li>
-      <li>Swipe down Control Centre and tap Focus to activate</li>
+      <li>Open the <strong>Shortcuts</strong> app → <strong>Automation</strong> tab → <strong>+</strong></li>
+      <li>Choose <strong>App → Is Opened</strong> → select <strong>Focus</strong> (your home screen icon)</li>
+      <li>Add action <strong>Set Focus → Study → Turn On</strong></li>
+      <li>Turn off <strong>Ask Before Running</strong> → tap <strong>Done</strong></li>
     </ol>
-    <p class="tip">Tip: Add this app to your home screen (Share → Add to Home Screen) for the best full-screen experience. Screen Wake Lock works in Safari 16.4+.</p>
-    <button class="btn btn-main" id="ios-guide-close" type="button" style="width:100%;margin-top:.5rem">Got it — let's focus</button>
+
+    <p class="tip">
+      Add this page to your home screen first: Safari → Share → <strong>Add to Home Screen</strong>.
+      <a href="https://support.apple.com/guide/iphone/allow-or-silence-notifications-for-a-focus-iph21d43af5b/ios" rel="noopener" target="_blank">Apple Focus guide ↗</a>
+    </p>
+    <div class="guide-actions">
+      <button class="btn btn-main" id="ios-guide-close" type="button">Done — start focusing</button>
+      <button class="btn btn-line" id="ios-guide-open-settings" type="button">Open iPhone Settings app</button>
+    </div>
   </div>
 </div>
 

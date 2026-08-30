@@ -10,6 +10,7 @@
   };
 
   var STORAGE_KEY = "focus-sanctuary-stats";
+  var SETUP_KEY = "focus-sanctuary-setup";
 
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.from((root || document).querySelectorAll(sel)); }
@@ -67,6 +68,8 @@
       fullscreenBtn: $("#btn-fullscreen"),
       iosGuide: $("#ios-guide"),
       iosGuideClose: $("#ios-guide-close"),
+      iosGuideSettings: $("#ios-guide-open-settings"),
+      blockSetupBtn: $("#btn-block-setup"),
       statsSessions: $("#stat-sessions"),
       statsMinutes: $("#stat-minutes"),
       customMin: $("#custom-minutes"),
@@ -141,6 +144,21 @@
       });
     }
 
+    if (this.els.blockSetupBtn) {
+      this.els.blockSetupBtn.addEventListener("click", function () {
+        self.openBlockSetup();
+      });
+    }
+
+    if (this.els.iosGuideSettings) {
+      this.els.iosGuideSettings.addEventListener("click", function () {
+        self._openIosSettingsHelp();
+      });
+    }
+
+    this._bindSetupSteps();
+    this._restoreSetupSteps();
+
     document.addEventListener("visibilitychange", function () {
       if (self.running && document.hidden && self.shieldActive) {
         self._flashStatus("Return to sanctuary — focus shield active");
@@ -161,6 +179,53 @@
     var label = meta ? meta.label : scape;
     if (this.els.status && !this.running) {
       this.els.status.textContent = "Soundscape: " + label;
+    }
+  };
+
+  FocusApp.prototype.openBlockSetup = function () {
+    if (this.els.iosGuide) this.els.iosGuide.classList.add("open");
+  };
+
+  FocusApp.prototype._bindSetupSteps = function () {
+    var self = this;
+    $$(".step-check input[type=checkbox]").forEach(function (box) {
+      box.addEventListener("change", function () {
+        var row = box.closest(".step-check");
+        if (row) row.classList.toggle("done", box.checked);
+        self._saveSetupSteps();
+      });
+    });
+  };
+
+  FocusApp.prototype._saveSetupSteps = function () {
+    var done = {};
+    $$(".step-check input[type=checkbox]").forEach(function (box) {
+      done[box.id] = box.checked;
+    });
+    try { localStorage.setItem(SETUP_KEY, JSON.stringify(done)); } catch (_) { /* noop */ }
+  };
+
+  FocusApp.prototype._restoreSetupSteps = function () {
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem(SETUP_KEY) || "{}"); } catch (_) { /* noop */ }
+    $$(".step-check input[type=checkbox]").forEach(function (box) {
+      if (saved[box.id]) {
+        box.checked = true;
+        var row = box.closest(".step-check");
+        if (row) row.classList.add("done");
+      }
+    });
+  };
+
+  FocusApp.prototype._openIosSettingsHelp = function () {
+    var msg = "On your iPhone:\n\n1. Leave Safari and open the Settings app\n2. Tap Focus\n3. Tap + to create Study (or edit Do Not Disturb)\n4. Apps → Allow Notifications From → leave empty\n\nThis blocks notifications from every app.";
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(msg).catch(function () { alert(msg); });
+      if (this.els.shieldStatus) {
+        this.els.shieldStatus.textContent = "Steps copied — open Settings app";
+      }
+    } else {
+      alert(msg);
     }
   };
 
@@ -211,7 +276,9 @@
       this.els.shieldStatus.classList.add("on");
     }
     await this._requestWakeLock();
-    if (this.els.iosGuide) this.els.iosGuide.classList.add("open");
+    if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+      this.openBlockSetup();
+    }
     document.documentElement.classList.add("shield-active");
   };
 

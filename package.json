@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "python3 build-standalone.py",
     "preview": "vite preview",
-    "lint": "oxlint assets lab",
+    "lint": "oxlint assets lab focus/assets",
     "test": "node --test tests/*.test.mjs",
     "standalone": "python3 build-standalone.py"
   },

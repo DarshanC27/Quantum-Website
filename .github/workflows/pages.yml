@@ -27,6 +27,7 @@ jobs:
         run: |
           mkdir -p _site/assets _site/lab
           cp index.html immersive.html standalone.html logos.html _site/
+          cp -r focus _site/focus
           cp assets/app.js assets/style.css _site/assets/
           cp lab/*.html lab/*.js _site/lab/
 

@@ -1,55 +1,62 @@
-# Quantum Ready — company website
+<div align="center">
 
-This is the marketing website for **Quantum Ready**, a UK startup helping organisations prepare for post-quantum cryptography (NCSC 2035).
+<img width="100%" src="https://capsule-render.vercel.app/api?type=waving&color=0:0a0e27,100:6e40c9&height=200&section=header&text=Quantum%20Ready&fontSize=56&fontColor=00ff9f&fontAlignY=36&desc=Company%20website&descSize=17&descAlignY=58&animation=fadeIn" alt="Quantum Ready"/>
 
-## What you already have
+**The public website of Quantum Ready — post-quantum readiness for UK firms that keep secrets for decades.**
 
-| Page | Purpose |
-|------|---------|
-| `index.html` | Main company website (calculator, services, team, free-scan form) |
-| `immersive.html` | Cinematic single-file experience (3D dilution fridge) |
-| `standalone.html` | One-file copy of the main site (for email / offline demos) |
-| `lab/` | Design experiments — not for customers |
+<a href="https://darshanc27.github.io/Quantum-Website/"><img src="https://img.shields.io/badge/Live-site-00ff9f?style=for-the-badge&labelColor=0a0e27&logo=githubpages&logoColor=white" alt="Live site"/></a>
+<img src="https://img.shields.io/badge/Vite-static-646cff?style=for-the-badge&labelColor=0a0e27&logo=vite&logoColor=white" alt="Vite"/>
+<img src="https://img.shields.io/badge/Lint-oxlint-f0db4f?style=for-the-badge&labelColor=0a0e27" alt="oxlint"/>
+<img src="https://img.shields.io/badge/Licence-MIT-16213e?style=for-the-badge&labelColor=0a0e27" alt="MIT"/>
 
-Local preview: `npm install` then `npm run dev` → http://localhost:5173
+[▶ Visit the site](https://darshanc27.github.io/Quantum-Website/) · [Immersive page](https://darshanc27.github.io/Quantum-Website/immersive.html) · [Design lab](https://darshanc27.github.io/Quantum-Website/lab/)
 
-## How to put it live (you — 3 steps)
+</div>
 
-The code is ready. Publishing needs **one click from you** because GitHub must authorise Pages on your account.
+---
 
-### Option A — GitHub Pages (free, already wired)
+## Pages
 
-1. Open the repo: https://github.com/DarshanC27/Quantum-Website
-2. **Settings → Pages**
-3. Under **Build and deployment**, set Source to **GitHub Actions**
-4. Merge the launch PR (or push to `main`) — the workflow `.github/workflows/pages.yml` deploys automatically
-5. Your live URL will be: **https://darshanc27.github.io/Quantum-Website/**
+| Page | What it is |
+|---|---|
+| [`index.html`](index.html) | Main site: Mosca risk calculator, services, team and a free-scan request form |
+| [`immersive.html`](immersive.html) | Cinematic single-file experience with a 3D dilution refrigerator |
+| [`standalone.html`](standalone.html) | The main site inlined into one file, for email and offline demos |
+| [`lab/`](lab) | Eight visual-direction experiments (brutalist, chrome, editorial, generative, terminal, clay, Swiss glitch, kinetic) |
+| [`focus/`](focus) | Focus Sanctuary: a 3D study companion with soundscapes, installable as a PWA |
 
-### Option B — Vercel (custom domain friendly)
+## The Mosca calculator
 
-1. Import the repository at vercel.com/new (framework preset: Other)
-2. Deploy
-3. Point your domain (e.g. `quantumready.co.uk`) at the Vercel project
+The headline interaction answers one question: *will your data still need to be secret when a quantum computer can read it?*
 
-## Connect the free-scan form (recommended)
-
-Today the form opens your email (`mailto:`). To collect leads properly:
-
-1. Create a free form at [Formspree](https://formspree.io) (or Netlify Forms)
-2. Put the endpoint URL in `assets/app.js`:
-
-```js
-var CONTACT = {
-  email: "darshanchabbi271@gmail.com",
-  formEndpoint: "https://formspree.io/f/YOUR_ID"  // ← add this
-};
+```
+exposed  ⇔  shelf-life of the data  +  time to migrate  >  years until a cryptographically relevant quantum computer
 ```
 
-3. Run `npm run standalone` so `standalone.html` stays in sync
+Pick a sector, adjust the sliders, and the verdict flips between **Exposed** and **Within tolerance**. The formula is mirrored in [`tests/mosca.mjs`](tests/mosca.mjs) and covered by Node's built-in test runner.
 
-## Verified
+## Develop
 
-- Lint clean, Mosca calculator tests pass
-- Calculator works (sector → Exposed / Within tolerance)
-- Free-scan form submits
-- Immersive page boots and renders
+```bash
+npm install
+npm run dev          # http://localhost:5173
+npm run lint         # oxlint over assets/, lab/ and focus/
+npm test             # Mosca formula tests
+npm run standalone   # rebuild standalone.html after editing index.html or assets/
+```
+
+Edit `index.html` and `assets/` as the source of truth; `standalone.html` is generated.
+
+## Deploy
+
+Every push to `main` publishes to GitHub Pages through [`.github/workflows/pages.yml`](.github/workflows/pages.yml).
+The site is fully static, so it also deploys unchanged to Vercel or Netlify.
+
+## Contact form
+
+The free-scan form opens a pre-filled email by default. To collect requests server-side, set
+`CONTACT.formEndpoint` in [`assets/app.js`](assets/app.js) to a Formspree (or similar) endpoint and run `npm run standalone`.
+
+---
+
+<div align="center"><sub>© 2026 Quantum Ready Ltd · Guildford, United Kingdom</sub></div>
